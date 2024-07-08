@@ -48,13 +48,6 @@ namespace awstl
         ptr->~T();
     }
 
-    template <class T>
-    void destroy(T* ptr)
-    {
-        // 封装
-        awstl::destroy_one(ptr, std::is_trivially_destructible<T>());
-    }
-
     template <class ForwardIter>
     void destroy_cat(ForwardIter first, ForwardIter last, std::true_type){/* let the compiler handle this type */};
 
@@ -68,6 +61,14 @@ namespace awstl
             destroy(&*first);
         }
     }
+    
+    template <class T>
+    void destroy(T* ptr)
+    {
+        // 封装
+        awstl::destroy_one(ptr, std::is_trivially_destructible<T>());
+    }
+
 
     template <class ForwardIter>
     void destroy(ForwardIter first, ForwardIter last)
@@ -75,6 +76,16 @@ namespace awstl
         using value_type = typename std::iterator_traits<ForwardIter>::value_type;
         destroy_cat(first, last, std::is_trivially_destructible<value_type>());
     };
+
+    template <class ForwardIter,class T>
+    void destroy(ForwardIter first, ForwardIter last, T*)
+    {
+        using _trivial_destructor = std::is_trivially_destructible<T>;
+        destroy_cat(first, last, _trivial_destructor());
+    }
+
+    inline void destroy(char*, char*){}
+    inline void destroy(wchar_t*, wchar_t*){}
 #pragma endregion
     
 }
