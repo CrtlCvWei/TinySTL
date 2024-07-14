@@ -37,16 +37,16 @@ namespace awstl
 
     static  void * aw_oom_malloc(size_t size)
     {
-        auto result = aw_general_oom_handler(std::malloc,size);
+        const auto result = aw_general_oom_handler(std::malloc,size);
         if(!result)
-            throw_bad_alloc;
+            throw_bad_alloc
     }
 
     static  void * aw_oom_realloc(void *ptr, size_t size)
     {
-        auto result = aw_general_oom_handler(std::realloc,ptr,size);
+        const auto result = aw_general_oom_handler(std::realloc,ptr,size);
         if(!result)
-            throw_bad_alloc;
+            throw_bad_alloc
     }
     
     static  void _awHandler()

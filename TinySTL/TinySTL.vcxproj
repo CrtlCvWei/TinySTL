@@ -159,6 +159,13 @@
   <ItemGroup>
     <ClInclude Include="include\allocator.hpp" />
     <ClInclude Include="include\constructor.hpp" />
+    <ClInclude Include="include\memory.hpp" />
+    <ClInclude Include="include\type_traits.hpp" />
+    <ClInclude Include="include\uninitialized.hpp" />
+    <ClInclude Include="include\utils.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\iterator.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

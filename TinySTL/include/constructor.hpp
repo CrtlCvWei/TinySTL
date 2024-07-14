@@ -34,6 +34,9 @@ namespace awstl
         // TODO : replace std::forward to my::forward
         ::new(static_cast<void*>(ptr)) T1(std::forward<Args>(args)...);
     }
+
+
+
 #pragma endregion
 
 #pragma region destructor
