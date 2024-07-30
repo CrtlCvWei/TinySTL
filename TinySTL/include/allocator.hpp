@@ -170,11 +170,11 @@ namespace awstl
          static  void deallocate(pointer ptr, size_type n);
         
         static  void construct(pointer ptr);
-        void construct(pointer ptr, const T& x);
-        void construct(pointer ptr, T&& x);
+        static  void construct(pointer ptr, const T& x);
+        static  void construct(pointer ptr, T&& x);
         template <class... Args>
-        void construct(pointer ptr, Args&&... args);
-        void destroy(pointer ptr);
+        static void construct(pointer ptr, Args&&... args);
+        static void destroy(pointer ptr);
 
     public:
         allocator() = default;
@@ -239,6 +239,8 @@ namespace awstl
     {
        awstl:: _destroy(ptr);
     }
+
+    
     
     /* NOTE: In C++17: We Should Not missing the comparison operators != / == */
     template <class T, class U>

@@ -2,6 +2,7 @@
 #include <vector>
 #include "include/allocator.hpp"
 #include "include/uninitialized.hpp"
+#include "include/vector.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -9,19 +10,34 @@ int main(int argc, char* argv[])
     int ib[6] = {5,6,7,8,9,10};
     unsigned int i = 0;
     
-    std::vector<int,awstl::allocator<int> > iv(ia,ia+5);
-    std::vector<int> ivv(ib,ib+2);
+    awstl::vector<int> iv(ia,ia+5);
+    awstl::vector<int> ivv(ib,ib+2);
     for(i = 0; i < iv.size(); i++)
     {
         std::cout << iv[i] << " ";
     }
     std::cout << std::endl;
+    std::cout << "iv size: " << iv.size() << std::endl;
 
-    awstl::uninitialized_copy(iv.begin(),iv.end(),ivv.begin(),ivv.end());
-    for(i = 0; i < ivv.size(); i++)
+    for(int i = 5; i < 20; i++)
     {
-        std::cout << ivv[i] << " ";
+        iv.push_back(i);
     }
+
+    for(i = 0; i < iv.size(); i++)
+    {
+        std::cout << iv[i] << " ";
+    }
+    std::cout << std::endl;
+    std::cout << "iv size: " << iv.size() << std::endl;
+
+    iv.insert(iv.begin()+2, 100);
+    iv.resize(10,1);
+    for(i = 0; i < iv.size(); i++)
+    {
+        std::cout << iv[i] << " ";
+    }
+    
     
     return 0;
 }

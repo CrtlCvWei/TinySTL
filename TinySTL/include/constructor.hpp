@@ -4,6 +4,8 @@
 #include <new>
 #include <type_traits>
 
+#include "type_traits.hpp"
+
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable : 4100) // unused parameter
@@ -41,21 +43,28 @@ namespace awstl
 
 #pragma region destructor
     template <class T>
-    void destroy_one(T* ptr, std::true_type){/* let the compiler handle this type */};
+    void destroy_one(T* ptr, aw_true_type){/* let the compiler handle this type */};
 
     template <class T>
-    void destroy_one(T* ptr, std::false_type)
+    void destroy_one(T* ptr, aw_false_type)
     {
         if (ptr == nullptr)
             return;
         ptr->~T();
     }
 
-    template <class ForwardIter>
-    void destroy_cat(ForwardIter first, ForwardIter last, std::true_type){/* let the compiler handle this type */};
+    template <class T>
+    void destroy(T* ptr)
+    {
+        // 封装
+        awstl::destroy_one(ptr,_type_traits<T>::has_trivial_destructor());
+    }
 
     template <class ForwardIter>
-    void destroy_cat(ForwardIter first, ForwardIter last, std::false_type)
+  void destroy_cat(ForwardIter first, ForwardIter last, aw_true_type){/* let the compiler handle this type */};
+    
+    template <class ForwardIter>
+    void destroy_cat(ForwardIter first, ForwardIter last, aw_false_type)
     {
         using value_type = typename std::iterator_traits<ForwardIter>::value_type;
         for (; first != last; ++first)
@@ -65,26 +74,16 @@ namespace awstl
         }
     }
     
-    template <class T>
-    void destroy(T* ptr)
-    {
-        // 封装
-        awstl::destroy_one(ptr, std::is_trivially_destructible<T>());
-    }
-
-
     template <class ForwardIter>
     void destroy(ForwardIter first, ForwardIter last)
     {
-        using value_type = typename std::iterator_traits<ForwardIter>::value_type;
-        destroy_cat(first, last, std::is_trivially_destructible<value_type>());
+        destroy_cat(first, last, awstl::_type_traits<ForwardIter>::has_trivial_destructor());
     };
 
     template <class ForwardIter,class T>
     void destroy(ForwardIter first, ForwardIter last, T*)
     {
-        using _trivial_destructor = std::is_trivially_destructible<T>;
-        destroy_cat(first, last, _trivial_destructor());
+        destroy_cat(first, last, awstl::_type_traits<ForwardIter>::has_trivial_destructor());
     }
 
     inline void destroy(char*, char*){}
