@@ -1,44 +1,50 @@
 #include <iostream>
 #include <vector>
 #include "include/allocator.hpp"
+#include "include/list.hpp"
 #include "include/uninitialized.hpp"
-#include "include/vector.hpp"
+#include "include/deque.hpp"
+#include "include/stack.hpp"
 
 int main(int argc, char* argv[])
 {
-    int ia[5] = {0,1,2,3,4};
-    int ib[6] = {5,6,7,8,9,10};
-    unsigned int i = 0;
-    
-    awstl::vector<int> iv(ia,ia+5);
-    awstl::vector<int> ivv(ib,ib+2);
-    for(i = 0; i < iv.size(); i++)
-    {
-        std::cout << iv[i] << " ";
-    }
-    std::cout << std::endl;
-    std::cout << "iv size: " << iv.size() << std::endl;
 
-    for(int i = 5; i < 20; i++)
-    {
-        iv.push_back(i);
-    }
-
-    for(i = 0; i < iv.size(); i++)
-    {
-        std::cout << iv[i] << " ";
-    }
-    std::cout << std::endl;
-    std::cout << "iv size: " << iv.size() << std::endl;
-
-    iv.insert(iv.begin()+2, 100);
-    iv.resize(10,1);
-    for(i = 0; i < iv.size(); i++)
-    {
-        std::cout << iv[i] << " ";
-    }
-    
-    
+    // awstl::deque<int,awstl::allocator<int>, 32> ideq(20, 9);
+    //
+    // ideq.push_back(10);
+    // ideq.push_front(100);
+    //
+    // std::cout << "ideq.size() = " << ideq.size() << std::endl;
+    //
+    // for( auto it = ideq.begin(); it != ideq.end(); ++it)
+    // {
+    //     std::cout << *it << " ";
+    // }
+    //
+    // ideq.pop_back();
+    // std::cout << std::endl;
+    // std::cout << "ideq.size() = " << ideq.size() << std::endl;
+    // for( auto it = ideq.begin(); it != ideq.end(); it++)
+    // {
+    //     std::cout << *it << " ";
+    // }
+    //
+    // ideq.pop_back();
+    // std::cout << std::endl;
+    // std::cout << "ideq.size() = " << ideq.size() << std::endl;
+    // for(auto it = ideq.begin(); it != ideq.end(); it++)
+    // {
+    //     std::cout << *it << " ";
+    // }
+    //
+    // ideq.clear();
+    // std::cout << std::endl;
+    // std::cout << "ideq.size() = " << ideq.size() << std::endl;
+    // for( auto it = ideq.begin(); it != ideq.end(); ++it)
+    // {
+    //     std::cout << *it << " ";
+    // }
+    //
     return 0;
 }
 

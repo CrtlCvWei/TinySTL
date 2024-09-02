@@ -16,19 +16,9 @@ namespace awstl
         return (bytes) & ~(align - 1);
     }
 
-#pragma region move
-    template <class T>
-    auto && move(T && t) -> decltype(static_cast<T &&>(t))
+    static size_t mod(size_t bytes, size_t align = _ALIGN)
     {
-        return static_cast<typename std::remove_reference<T> &&>(t);
-    }
-#pragma endregion
-
-#pragma region forward
-    template <class T>
-    auto && forward(typename std::remove_reference<T>::type & t) noexcept
-    {
-        return static_cast<T &&>(t);
+        return bytes & (align - 1);
     }
 }
 

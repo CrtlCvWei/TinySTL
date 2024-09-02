@@ -60,6 +60,17 @@ namespace awstl
         awstl::destroy_one(ptr,_type_traits<T>::has_trivial_destructor());
     }
 
+    template <class T>
+    void destroy(T* ptr, size_t n)
+    {
+        // 封装
+        if(n <= 0)
+            return;
+        auto it_end = ptr + n ;
+        for(auto it = ptr; it != it_end; ++it)
+            awstl::destroy_one(it, _type_traits<T>::has_trivial_destructor());
+    }
+
     template <class ForwardIter>
   void destroy_cat(ForwardIter first, ForwardIter last, aw_true_type){/* let the compiler handle this type */};
     

@@ -98,7 +98,7 @@ namespace awstl
     inline typename aw_iterator_traits<Iterator>::iterator_category
         iterator_category(const Iterator&)
     {
-        return static_cast<typename aw_iterator_traits<Iterator>::iterator_category()>(nullptr);
+        return aw_iterator_traits<Iterator>::iterator_category();
     }
 #pragma endregion
 
@@ -126,7 +126,7 @@ namespace awstl
     typename aw_iterator_traits<InputIterator>::difference_type
     distance(InputIterator first, InputIterator last)
     {
-        return _distance(first, last, Get_It_cat(static_cast<InputIterator>(nullptr)));
+        return _distance(first, last, iterator_category(static_cast<InputIterator>(nullptr)));
     }
 
 #pragma endregion
@@ -161,7 +161,7 @@ namespace awstl
     inline void _advance(ForwardIterator& it, Distance n, bidirectional_iterator_tag)
     {
         if (n == 0) return;
-        else if (n > 0)
+        if (n > 0)
            { while (n--) ++it;}
         else
             while (n++) --it;
@@ -176,7 +176,7 @@ namespace awstl
     template <class InputIterator, class Distance>
     inline void advance(InputIterator& it, Distance n)
     {
-        _advance(it, n, Get_It_cat(static_cast<InputIterator>(nullptr)));
+        _advance(it, n, iterator_category(static_cast<InputIterator>(nullptr)));
     }
 #pragma endregion
     

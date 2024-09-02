@@ -149,6 +149,11 @@ namespace awstl
     inline void _destroy(T* ptr) {
         awstl::destroy(ptr);
     }
+
+    template <typename  T>
+    inline void _destroy(T* ptr, size_t n) {
+        awstl::destroy(ptr, n);
+    }
     
     template <class T>
     class allocator
@@ -175,6 +180,7 @@ namespace awstl
         template <class... Args>
         static void construct(pointer ptr, Args&&... args);
         static void destroy(pointer ptr);
+        static void destroy(pointer ptr, size_type n);
 
     public:
         allocator() = default;
@@ -240,8 +246,13 @@ namespace awstl
        awstl:: _destroy(ptr);
     }
 
-    
-    
+    template <class T>
+    void allocator<T>::destroy(pointer ptr, size_type n)
+    {
+        awstl::_destroy(ptr, n);
+    }
+
+
     /* NOTE: In C++17: We Should Not missing the comparison operators != / == */
     template <class T, class U>
     bool operator==(const allocator<T>&, const allocator<U>&) { return true; }

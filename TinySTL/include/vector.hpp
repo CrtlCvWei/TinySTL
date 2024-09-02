@@ -15,7 +15,7 @@ namespace awstl
     {
         static_assert(!std::is_same<bool, T>::value, "vector<bool> is abandoned in awstl");
 
-    protected:
+    public:
         using data_alloctor = awstl::allocator<T>;
 
         using value_type = T;
@@ -27,7 +27,7 @@ namespace awstl
         using size_type = typename data_alloctor::size_type;
         using ptrdiff_t = typename data_alloctor::difference_type;
 
-
+    protected:
         iterator start;
         iterator finish;
         iterator end_of_storage;
@@ -151,14 +151,14 @@ namespace awstl
 
         iterator begin() noexcept { return start; }
         iterator end() noexcept { return finish; }
-        const_iterator begin() const noexcept { return const_cast<const_iterator>(start); }
-        const_iterator end() const noexcept { return const_cast<const_iterator>(finish); }
+        const_iterator cbegin() const noexcept { return const_cast<const_iterator>(start); }
+        const_iterator cend() const noexcept { return const_cast<const_iterator>(finish); }
         reverse_iterator rend() noexcept { return reverse_iterator(start); }
         reverse_iterator rbegin() noexcept { return reverse_iterator(finish); }
-        const_reverse_iterator rend() const noexcept { return const_reverse_iterator(start); }
-        const_reverse_iterator rbegin() const noexcept { return const_reverse_iterator(finish); }
+        const_reverse_iterator rcend() const noexcept { return const_reverse_iterator(start); }
+        const_reverse_iterator rcbegin() const noexcept { return const_reverse_iterator(finish); }
 
-        size_type size() const { return static_cast<size_type>(end() - begin()); }
+        size_type size() { return static_cast<size_type>(end() - begin()); }
         bool empty() const { return begin() == end(); }
         size_type capacity() const { return static_cast<size_type>(end_of_storage - start); }
         reference operator[](size_type n) { return *(begin() + n); }
@@ -186,7 +186,7 @@ namespace awstl
         {
             if (n == 0)
                 return;
-            if (end_of_storage - finish >= n)
+            if (distance(end_of_storage,finish) >= n)
             {
                 const T x_copy = x;
                 const size_type elem_after = finish - pos;
