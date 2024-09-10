@@ -4,47 +4,54 @@
 #include "include/list.hpp"
 #include "include/uninitialized.hpp"
 #include "include/deque.hpp"
+#include "include/queue.hpp"
 #include "include/stack.hpp"
+#include "include/rb_tree.hpp"
+#include "include/set.hpp"
+
+
+class Base
+{
+public:
+    virtual void Fun()
+    {
+        std::cout << "Base" << std::endl;
+    }
+};
+
+class Drived : public Base
+{
+public:
+    virtual void Fun() override
+    {
+        std::cout << "Drived" << std::endl;
+    }
+};
+
+using test_rb_tree = awstl::rb_tree<float, float, awstl::identity<float>, std::less<float>>;
 
 int main(int argc, char* argv[])
 {
+    
+   int i;
+    int ia[5] = {0, 1, 2, 3, 4};
+    awstl::set<int> iset(ia, ia+5);
 
-    // awstl::deque<int,awstl::allocator<int>, 32> ideq(20, 9);
-    //
-    // ideq.push_back(10);
-    // ideq.push_front(100);
-    //
-    // std::cout << "ideq.size() = " << ideq.size() << std::endl;
-    //
-    // for( auto it = ideq.begin(); it != ideq.end(); ++it)
-    // {
-    //     std::cout << *it << " ";
-    // }
-    //
-    // ideq.pop_back();
-    // std::cout << std::endl;
-    // std::cout << "ideq.size() = " << ideq.size() << std::endl;
-    // for( auto it = ideq.begin(); it != ideq.end(); it++)
-    // {
-    //     std::cout << *it << " ";
-    // }
-    //
-    // ideq.pop_back();
-    // std::cout << std::endl;
-    // std::cout << "ideq.size() = " << ideq.size() << std::endl;
-    // for(auto it = ideq.begin(); it != ideq.end(); it++)
-    // {
-    //     std::cout << *it << " ";
-    // }
-    //
-    // ideq.clear();
-    // std::cout << std::endl;
-    // std::cout << "ideq.size() = " << ideq.size() << std::endl;
-    // for( auto it = ideq.begin(); it != ideq.end(); ++it)
-    // {
-    //     std::cout << *it << " ";
-    // }
-    //
-    return 0;
+    std::cout << "size = " << iset.size() << std::endl;
+    iset.insert(3);
+    std::cout << "size = " << iset.size() << std::endl;
+    iset.insert(5);
+    std::cout << "size = " << iset.size() << std::endl;
+    iset.erase(1);
+    std::cout << "size = " << iset.size() << std::endl;
+    auto b1 = iset.begin();
+    auto e1 = iset.end();
+    while(b1 != e1)
+    {
+        std::cout << *b1 << " ";
+        ++b1;
+    }
+    std::cout << std::endl;
+    
 }
 

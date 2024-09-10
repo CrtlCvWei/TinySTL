@@ -8,6 +8,7 @@ namespace awstl
     template<class T, class Sequence = awstl::list<T>>
     class queue
     {
+    public:
         using container_type = Sequence;
         using value_type = typename Sequence::value_type;
         using size_type = typename Sequence::size_type;

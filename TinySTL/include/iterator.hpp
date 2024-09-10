@@ -109,7 +109,7 @@ namespace awstl
     _distance(InputIterator first, InputIterator last,input_iterator_tag)
     {
         typename aw_iterator_traits<InputIterator>::difference_type n = 0;
-        for (; first != last; ++first)
+        for (;first != last; ++first)
             ++n;
         return n;
     }

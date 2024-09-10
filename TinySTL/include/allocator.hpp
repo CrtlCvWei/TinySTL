@@ -73,7 +73,7 @@ namespace awstl
         catch (const std::bad_alloc& e)
         {
            std::cerr << e.what() << std::endl;
-            return nullptr;
+            throw;
         }
     }
 

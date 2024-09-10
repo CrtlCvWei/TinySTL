@@ -161,10 +161,13 @@
     <ClInclude Include="include\allocator.hpp" />
     <ClInclude Include="include\constructor.hpp" />
     <ClInclude Include="include\deque.hpp" />
+    <ClInclude Include="include\hashtable.hpp" />
     <ClInclude Include="include\list.hpp" />
+    <ClInclude Include="include\lua_table.h" />
     <ClInclude Include="include\memory.hpp" />
     <ClInclude Include="include\queue.hpp" />
     <ClInclude Include="include\rb_tree.hpp" />
+    <ClInclude Include="include\set.hpp" />
     <ClInclude Include="include\stack.hpp" />
     <ClInclude Include="include\type_traits.hpp" />
     <ClInclude Include="include\uninitialized.hpp" />

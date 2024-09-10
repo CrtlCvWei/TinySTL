@@ -33,6 +33,7 @@ namespace awstl
     {
         using list_node = _list_node<T>;
         using self = _list_node_iterator<T, T&, T*>;
+        using const_self = _list_node_iterator<T, const T&, const T*>;
         using reference = Ref;
         using pointer = Ptr;
         using iterator_category = bidirectional_iterator_tag;
@@ -58,6 +59,8 @@ namespace awstl
         }
         bool operator==(const self& x) const { return node == x.node; }
         bool operator!=(const self& x) const { return node != x.node; }
+        bool operator==(const_self& x) const { return node == x.node; }
+        bool operator!=(const_self& x) const { return node != x.node; }
         reference operator*() const { return (*node).data; }
         pointer operator->() const { return &(node->data); }
 
@@ -87,12 +90,13 @@ namespace awstl
             return tmp;
         }
     };
-
+    
     // 环形链表
     template <class T, class Alloc = allocator<T>>
     class list
     {
-    protected:
+    public:
+        using value_type = T;
         using data_allocator = Alloc;
         using node_allocator = allocator<_list_node<T>>;
         using list_node = _list_node<T>;
@@ -103,12 +107,13 @@ namespace awstl
         using size_type = typename _list_node_iterator<T, T&, T*>::size_type;
         using difference_type = typename _list_node_iterator<T, T&, T*>::difference_type;
         using reference = T&;
+        using const_reference = const T&;
         using vector_iterator = T*;
-
+    protected:
         list_node* _node; // 指向尾部的指针,头部 prev，尾部next
         data_allocator alloc;
         node_allocator node_alloc;
-        size_type _size;
+        mutable size_type _size;
 
     protected:
         void empty_initialize()
@@ -129,15 +134,15 @@ namespace awstl
             return Anode;
         }
 
-        void _check_size()
+        void _check_size() const
         {
             auto _curr = distance(begin(), end());
             _size = _curr == _size ? _size : _curr; // _size = _curr
         }
         void transfer(iterator position, iterator first, iterator last);
     public:
-        iterator begin() { return iterator(_node->next); } // 返回指向第一个元素的迭代器,显式构造
-        iterator end() { return iterator(_node); } // 返回指向尾部的迭代器,显式构造
+        iterator begin() const { return iterator(_node->next); } // 返回指向第一个元素的迭代器,显式构造
+        iterator end() const { return iterator(_node); } // 返回指向尾部的迭代器,显式构造
         const_iterator cbegin() const { return const_iterator(_node->next); }
         const_iterator cend() const { return const_iterator(_node); }
         reverse_iterator rbegin() { return reverse_iterator(end()); }
@@ -175,7 +180,7 @@ namespace awstl
             return _size == 0;
         }
 
-        constexpr size_type size() noexcept { _check_size(); return _size; }
+        constexpr size_type size() const  noexcept { _check_size(); return _size; }
         reference front() { return *begin(); }
         reference back() { return *(--end()); }
         void push_back(const T& x);
@@ -418,7 +423,7 @@ namespace awstl
     typename list<T, Alloc>::iterator list<T, Alloc>::erase(iterator position)
     {
         if (empty())
-            return;
+            return iterator(nullptr);
         auto ptr = begin();
         auto last = end();
         while (ptr != last)
@@ -427,10 +432,10 @@ namespace awstl
             {
                 auto tmp = ptr.node;
                 ++ptr;
-                ptr.node->prev->next = ptr.node->next;
-                ptr.node->next->prev = ptr.node->prev;
-                alloc.destroy(tmp);
-                alloc.deallocate(tmp);
+                tmp->prev->next = ptr.node;
+                ptr.node->prev = tmp->prev;
+                node_alloc.destroy(tmp);
+                node_alloc.deallocate(tmp);
                 --_size;
                 return ptr;
             }
